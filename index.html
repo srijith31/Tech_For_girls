@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tech for Girls Registration</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f4ff;
+      display: flex;
+      justify-content: center;
+      padding: 30px;
+    }
+    .container {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      color: #444;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background: #4b4bf9;
+      color: white;
+      font-weight: bold;
+      border: none;
+      cursor: pointer;
+    }
+    button:disabled {
+      background: gray;
+      cursor: not-allowed;
+    }
+    #message {
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h2>Tech for Girls Registration</h2>
+    <form id="registrationForm" action="/submit" method="POST" enctype="multipart/form-data">
+      <input type="text" name="name" placeholder="Full Name" required />
+      <input type="tel" name="phone" placeholder="Phone Number" required />
+      <input type="email" name="email" placeholder="Email ID" required />
+      <input type="text" name="college" placeholder="College / Department" required />
+
+      <button type="button" id="shareBtn">📤 Share on WhatsApp</button>
+      <p id="counterText">Click count: 0/5</p>
+
+      <label for="screenshot">Upload Screenshot:</label>
+      <input type="file" id="screenshot" name="screenshot" accept="image/*" required />
+
+      <button type="submit" id="submitBtn" disabled>Submit Registration</button>
+    </form>
+    <p id="message"></p>
+  </div>
+
+  <script>
+    let count = 0;
+    const shareBtn = document.getElementById('shareBtn');
+    const counterText = document.getElementById('counterText');
+    const submitBtn = document.getElementById('submitBtn');
+    const form = document.getElementById('registrationForm');
+    const message = document.getElementById('message');
+
+    if (localStorage.getItem("submitted") === "true") {
+      form.style.display = "none";
+      message.innerText = "🎉 Your submission has been recorded. Thanks for being part of Tech for Girls!";
+    }
+
+    shareBtn.addEventListener('click', () => {
+      if (count < 5) {
+        count++;
+        counterText.innerText = `Click count: ${count}/5`;
+        window.open("https://wa.me/?text=" + encodeURIComponent("Hey Buddy, Join Tech For Girls Community"), "_blank");
+      }
+      if (count >= 5) {
+        counterText.innerText = "Sharing complete. Please continue.";
+        submitBtn.disabled = false;
+      }
+    });
+
+    form.addEventListener('submit', () => {
+      localStorage.setItem("submitted", "true");
+    });
+  </script>
+</body>
+</html>
